@@ -8,12 +8,16 @@ import {Provider} from 'react-redux';
 export default class Issue extends PureComponent {
   componentWillMount = () => {
     const createdHistory = createBrowserHistory();
+
+    const reducers = {router: connectRouter(createdHistory)};
+    const middleware = [routerMiddleware(createdHistory)];
+
     const createdStore = createStore(
-      combineReducers({router: connectRouter(createdHistory)}),
-      compose(applyMiddleware([routerMiddleware(createdHistory)]))
+      combineReducers(reducers),
+      compose(applyMiddleware(...middleware))
     );
     this.conf = {createdHistory, createdStore};
-  }
+  };
 
   render = () => {
     const {createdStore, createdHistory} = this.conf;
